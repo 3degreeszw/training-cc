@@ -1,13 +1,13 @@
 {
   "productName": "Dial a Delivery Call Center",
   "version": "1.0.0",
-  "buildNumber":"1",
+  "buildNumber": "1",
   "description": "Simbisa Dial a Delivery Online call center agent portal",
   "homepage": "./",
   "main": "electron.js",
   "scripts": {
     "start": "electron .",
-    "pack:osx": "electron-packager . DaD-Call-Center --out=dist/osx --platform=darwin --arch=x64 --icon=assets/appicon.icns",
+    "pack:osx": "electron-packager . DaD-Call-Center --out=dist/osx --platform=darwin --arch=x64 --icon=assets/appicon.icns --app-bundle-id='G48729AC8P.online.dial-a-delivery.*' --osx-sign",
     "pack:win64": "electron-packager . DaD-Call-Center --out=dist/win --platform=win32 --arch=x64 app-version=$npm_package_version --icon=assets/appicon.ico",
     "release": "npm run pack:osx && npm run pack:win64"
   },
@@ -15,5 +15,6 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^4.1.1"
-  }
+  },
+  "dependencies": {}
 }

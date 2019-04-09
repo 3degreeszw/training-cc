@@ -1,15 +1,38 @@
-const electron = require('electron');
-// Module to control application life.
-const app = electron.app;
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow;
-const Menu = electron.Menu;
+const { app, autoUpdater, dialog, BrowserWindow, Menu } = require('electron');
+// Setup application updates.
+const server = 'http://update.dial-a-delivery.online:8080';
+const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
 
-const path = require('path');
-const url = require('url');
+autoUpdater.setFeedURL(feed);
+
+setInterval(() => {
+  autoUpdater.checkForUpdates()
+}, 60000);
+
+autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+  const dialogOpts = {
+    type: 'info',
+    buttons: ['Restart', 'Later'],
+    title: 'Application Update',
+    message: process.platform === 'win32' ? releaseNotes : releaseName,
+    detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+  }
+
+  dialog.showMessageBox(dialogOpts, (response) => {
+    if (response === 0) autoUpdater.quitAndInstall()
+  })
+});
+
+autoUpdater.on('error', message => {
+  console.error('There was a problem updating the application')
+  console.error(message)
+});
 
 
 const template = [
+  {
+    role: 'windowMenu'
+  },
   {
     label: 'Edit',
     submenu: [
